@@ -1,47 +1,70 @@
 import mongoose from 'mongoose';
 
-const userSchema = new mongoose.Schema({
-    name:{
-        type: String,
-        required: true
+const userSchema = new mongoose.Schema(
+  {
+    _id: {
+      type: String,
+      default: () => `usr_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
     },
-    email:{
-        type: String,
-        required: true,
-        unique: true
+    name: {
+      type: String,
+      required: true,
     },
-    image:{
-        type: String
+    email: {
+      type: String,
+      required: true,
+      unique: true,
     },
-    role:{
-        type: String,
-        enum:["admin", "vendor", "user"],
-        default: "user"
+    password: {
+      type: String,
     },
-    isBlocked:{
-        type: Boolean,
-        default: false
+    image: {
+      type: String,
     },
-    businessName:{
-        type: String
+    role: {
+      type: String,
+      enum: ['customer', 'vendor', 'admin', 'user'],
+      default: 'customer',
     },
-    subscriptionPlan:{
-        type: String,
-        enum:["basic", "premium"],
-        default: "basic"
+    isBlocked: {
+      type: Boolean,
+      default: false,
     },
-    subscriptionExpiryDate:{
-        type: Date
+    businessName: {
+      type: String,
     },
-    createdAt:{
-        type: Date,
-        default: Date.now
+    phone: {
+      type: String,
     },
-    updatedAt:{
-        type: Date,
-        default: Date.now
-    }
-})
+    bio: {
+      type: String,
+    },
+    location: {
+      type: String,
+    },
+    subscriptionPlan: {
+      type: String,
+      enum: ['free', 'premium', 'basic'],
+      default: 'free',
+    },
+    subscriptionExpiresAt: {
+      type: String,
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+    },
+    updatedAt: {
+      type: Date,
+      default: Date.now,
+    },
+  },
+  {
+    timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+  }
+);
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.models.User || mongoose.model('User', userSchema);
 export default User;

@@ -1,57 +1,104 @@
 import mongoose from 'mongoose';
 
-const serviceSchema = new mongoose.Schema({
-    serviceName:{
-        type: String,
-        required: true
+const serviceSchema = new mongoose.Schema(
+  {
+    _id: {
+      type: String,
+      default: () => `srv_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+    },
+    serviceName: {
+      type: String,
+      required: true,
     },
     vendorId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
+      type: String,
+      required: true,
     },
-    catagory:{
-        type: String,
-        required: true
+    vendorName: {
+      type: String,
+      default: 'Wedding Vendor',
     },
-    description:{
-        type: String,
-        required: true
+    vendorBusinessName: {
+      type: String,
     },
-    price:{
-        type: Number,
-        required: true
+    vendorAvatar: {
+      type: String,
     },
-    location:{
-        type: String,
-        required: true
+    vendorRating: {
+      type: Number,
+      default: 5.0,
     },
-    images:{
-        type: [String]
-        // required: true
+    vendorReviewCount: {
+      type: Number,
+      default: 1,
     },
-    status:{
-        type: String,
-        enum:["pending", "approved", "rejected"],
-        default: "pending"
+    category: {
+      type: String,
+      required: true,
     },
-    isActive:{
-        type: Boolean,
-        default: true
+    catagory: {
+      type: String,
     },
-    createdAt:{
-        type: Date,
-        default: Date.now
+    description: {
+      type: String,
+      required: true,
     },
-    updatedAt:{
-        type: Date,
-        default: Date.now
-    }
-},
+    price: {
+      type: Number,
+      required: true,
+    },
+    priceUnit: {
+      type: String,
+      default: 'Starting Package',
+    },
+    location: {
+      type: String,
+      required: true,
+    },
+    images: {
+      type: [String],
+      default: [],
+    },
+    features: {
+      type: [String],
+      default: [],
+    },
+    status: {
+      type: String,
+      enum: ['pending', 'approved', 'rejected'],
+      default: 'pending',
+    },
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
+    featured: {
+      type: Boolean,
+      default: false,
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+    },
+    updatedAt: {
+      type: Date,
+      default: Date.now,
+    },
+  },
+  {
+    timestamps: true,
+    toJSON: {
+      virtuals: true,
+      transform: (doc, ret) => {
+        if (!ret.category && ret.catagory) {
+          ret.category = ret.catagory;
+        }
+        return ret;
+      },
+    },
+    toObject: { virtuals: true },
+  }
+);
 
-    {
-        timestamps: true
-    }
-)
-
-export default mongoose.model('Service', serviceSchema);
+const Service = mongoose.models.Service || mongoose.model('Service', serviceSchema);
+export default Service;

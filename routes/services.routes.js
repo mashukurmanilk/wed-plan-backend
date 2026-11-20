@@ -1,17 +1,23 @@
-import cors from "cors";
-import express from "express";
-// import { createService, getAllServices, getServiceById, updateService, deleteService } from "../controllers/services.controller.js";
-// import { authenticateToken } from "../middleware/auth.middleware.js";
-import { getAllServices } from "../controllers/services.controller.js";
+import express from 'express';
+import {
+  getAllServices,
+  getServiceById,
+  createService,
+  updateService,
+  deleteService,
+  toggleServiceActive,
+  updateServiceStatus,
+} from '../controllers/services.controller.js';
 
 const router = express.Router();
 
-router.use(cors());
-
-router.get("/", getAllServices);
-// router.get("/:id", authenticateToken, getServiceById);
-// router.post("/", authenticateToken, createService);
-// router.put("/:id", authenticateToken, updateService);
-// router.delete("/:id", authenticateToken, deleteService);
+router.get('/', getAllServices);
+router.get('/:id', getServiceById);
+router.post('/', createService);
+router.patch('/:id/toggle-active', toggleServiceActive);
+router.patch('/:id/status', updateServiceStatus);
+router.put('/:id', updateService);
+router.patch('/:id', updateService);
+router.delete('/:id', deleteService);
 
 export default router;
