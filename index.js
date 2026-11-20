@@ -99,7 +99,7 @@ const autoSeedIfEmpty = async () => {
 
 const MONGO_URI =
   process.env.MONGODB_URI ||
-  "mongodb+srv://mashukurmanik_wed_plan:KhcVEz8eyWxJJFH9@cluster0.jcsvfv3.mongodb.net/wedplan";
+  " ";
 
 mongoose
   .connect(MONGO_URI, {
